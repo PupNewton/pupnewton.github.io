@@ -85,19 +85,7 @@
       <section id="latest">
         <h2>Latest posts</h2>
 
-        <article class="post-entry">
-          <span class="date">September 9, 2026</span>
-          <h3><a href="post.html">Setting up a blog that looks like an old Mac</a></h3>
-          <p class="excerpt">A short writeup on building this site — hard-edged shadows, pinstripe title bars, and no JavaScript in sight.</p>
-          <a class="read-more" href="post.html">Read more ▸</a>
-        </article>
-
-        <article class="post-entry">
-          <span class="date">August 22, 2026</span>
-          <h3><a href="post.html">Second post, for scale</a></h3>
-          <p class="excerpt">Placeholder entry so the archive has more than one thing in it — swap this out for real writing whenever you're ready.</p>
-          <a class="read-more" href="post.html">Read more ▸</a>
-        </article>
+        <div id="posts-list-root" data-limit="2"></div>
 
         <p><a href="posts.html">See all posts ▸</a></p>
       </section>
@@ -107,5 +95,8 @@
     <div class="status-bar">6 items on this desktop</div>
 
   </div>
+
+  <script src="assets/js/posts-index.js"></script>
+  <script src="assets/js/posts-list.js"></script>
 </body>
 </html>
