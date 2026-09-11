@@ -38,7 +38,7 @@ body {
 /* ---------- desktop frame / "window" ---------- */
 
 .screen {
-  max-width: 680px;
+  max-width: min(920px, 90vw);
   margin: 0 auto;
   background: var(--paper);
   border: 2px solid var(--chrome);
@@ -90,7 +90,9 @@ body {
 
 .menu-bar {
   display: flex;
-  gap: 2px;
+  flex-wrap: wrap;
+  gap: 2px 4px;
+  justify-content: center;
   border-bottom: 2px solid var(--chrome);
   padding: 6px 10px;
   background: var(--paper);
@@ -559,4 +561,12 @@ a:focus-visible, .read-more:focus-visible, .back-link:focus-visible {
   body { padding: 14px 8px 40px; }
   .title-bar h1 { font-size: 14px; padding: 3px 8px; }
   .pane { padding: 16px 14px 20px; }
+}
+
+@media (min-width: 900px) {
+  body { font-size: 16px; }
+  .title-bar h1 { font-size: 19px; padding: 4px 16px; }
+  .pane { padding: 30px 34px 36px; }
+  .pane > * + * { margin-top: 22px; }
+  h2 { font-size: 17px; }
 }
