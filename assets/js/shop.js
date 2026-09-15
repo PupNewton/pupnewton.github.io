@@ -9,6 +9,10 @@
       '</svg>';
   }
 
+  function priceLabel(product) {
+    return product.customizable ? `From $${product.basePrice}` : `$${product.basePrice}`;
+  }
+
   function cardFor(product) {
     const href = product.customizable
       ? `customizer.html?product=${encodeURIComponent(product.id)}`
@@ -29,7 +33,7 @@
       <div class="thumb">${thumbInner}</div>
       <div class="info">
         <span class="name">${product.name}</span>
-        <span class="price">${product.price}</span>
+        <span class="price">${priceLabel(product)}</span>
         ${badge}
       </div>
     `;

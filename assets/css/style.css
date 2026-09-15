@@ -360,6 +360,25 @@ a:hover { color: var(--ink); }
   font-weight: 700;
 }
 
+.feature-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.feature-toggle + .feature-toggle {
+  margin-top: 8px;
+}
+
+.feature-toggle input {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+
 .swatch-row {
   display: flex;
   flex-wrap: wrap;
@@ -388,6 +407,23 @@ a:hover { color: var(--ink); }
 
 .summary-box .summary-line {
   color: var(--sage);
+}
+
+.summary-box .summary-price {
+  font-weight: 700;
+  font-size: 15px;
+  margin-top: 6px;
+}
+
+.telegram-note {
+  font-size: 12px;
+  color: var(--sage);
+  margin-top: 8px;
+}
+
+.telegram-note a {
+  color: var(--sage);
+  font-weight: 700;
 }
 
 .request-btn {
