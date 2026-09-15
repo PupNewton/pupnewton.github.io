@@ -4,7 +4,8 @@
 
   const params = new URLSearchParams(window.location.search);
   const productId = params.get("product");
-  const product = (window.PRODUCTS || []).find((p) => p.id === productId);
+  const allProducts = typeof PRODUCTS !== "undefined" ? PRODUCTS : [];
+  const product = allProducts.find((p) => p.id === productId);
 
   if (!product || !product.customizable) {
     root.innerHTML = `

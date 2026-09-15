@@ -36,10 +36,12 @@
     return a;
   }
 
-  if (!window.PRODUCTS || !PRODUCTS.length) {
+  const products = typeof PRODUCTS !== "undefined" ? PRODUCTS : [];
+
+  if (!products.length) {
     status.textContent = "No items yet.";
   } else {
-    PRODUCTS.forEach((p) => grid.appendChild(cardFor(p)));
-    status.textContent = `${PRODUCTS.length} item${PRODUCTS.length === 1 ? "" : "s"}`;
+    products.forEach((p) => grid.appendChild(cardFor(p)));
+    status.textContent = `${products.length} item${products.length === 1 ? "" : "s"}`;
   }
 })();
