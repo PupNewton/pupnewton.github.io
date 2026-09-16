@@ -34,9 +34,19 @@
   const featureState = {};
   features.forEach((f) => { featureState[f.id] = false; });
 
+  const galleryHtml = (product.gallery && product.gallery.length)
+    ? `
+      <div class="gallery-strip">
+        ${product.gallery.map((src, i) => `<img src="${src}" alt="${product.name} photo ${i + 1}" loading="lazy" />`).join("")}
+      </div>
+    `
+    : "";
+
   root.innerHTML = `
     <h2>${product.name}</h2>
     <p>${product.blurb || ""}</p>
+
+    ${galleryHtml}
 
     <div class="customizer">
       <div class="stage-wrap">

@@ -22,6 +22,12 @@
    - "features" is an array of { id, label, priceDelta, image }
      - image is optional — only needed if checking the box should add
        a visible layer to the preview stage
+
+   GALLERY (optional):
+   - "gallery" is an array of image paths — real product photos, shown
+     as a horizontal scrollable strip above the customizer. Omit the
+     field entirely (or leave it an empty array) if you don't have
+     photos for a product yet.
    ============================================================ */
 
 const PRODUCTS = [
@@ -31,6 +37,12 @@ const PRODUCTS = [
     blurb: "A small stackable canister — placeholder demo product for the customizer.",
     customizable: true,
     basePrice: 28,
+    gallery: [
+      "assets/img/gallery/sample-canister-1.svg",
+      "assets/img/gallery/sample-canister-2.svg",
+      "assets/img/gallery/sample-canister-3.svg",
+      "assets/img/gallery/sample-canister-4.svg"
+    ],
     components: [
       {
         id: "base",
