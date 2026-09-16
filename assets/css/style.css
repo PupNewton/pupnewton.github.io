@@ -398,6 +398,93 @@ a:hover { color: var(--ink); }
   cursor: pointer;
 }
 
+/* ---------- text customizer fields ---------- */
+
+.text-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.text-input {
+  flex: 1 1 140px;
+  min-width: 100px;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 5px 8px;
+  border: 1.5px solid var(--chrome);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.text-input:focus {
+  outline: 2px solid var(--sage);
+  outline-offset: 1px;
+}
+
+.char-count {
+  font-size: 11px;
+  color: var(--sage);
+  white-space: nowrap;
+}
+
+.font-toggle-btn {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border: 1.5px solid var(--chrome);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.font-toggle-btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.font-options {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 6px;
+  border: 1.5px solid var(--chrome);
+  background: var(--paper);
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.font-option {
+  text-align: left;
+  font-size: 14px;
+  padding: 6px 10px;
+  border: none;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.font-option:hover {
+  background: var(--sage);
+  color: var(--paper);
+}
+
+.text-preview {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1.5px dashed var(--chrome);
+  font-size: 20px;
+  min-height: 1.4em;
+  word-break: break-word;
+}
+
+.text-preview.is-placeholder {
+  color: var(--sage);
+  font-style: italic;
+}
+
 .swatch-row {
   display: flex;
   flex-wrap: wrap;

@@ -25,6 +25,8 @@
 
   const components = product.components || [];
   const features = product.features || [];
+  const textFields = product.textFields || [];
+  const allFonts = typeof FONTS !== "undefined" ? FONTS : [];
 
   // current selection: componentId -> option index
   const selection = {};
@@ -33,6 +35,22 @@
   // current feature state: featureId -> boolean
   const featureState = {};
   features.forEach((f) => { featureState[f.id] = false; });
+
+  // current text field state: fieldId -> { value, fontId }
+  const textState = {};
+  textFields.forEach((f) => {
+    textState[f.id] = { value: "", fontId: allFonts.length ? allFonts[0].id : null };
+  });
+
+  function fontFamilyFor(fontId) {
+    const f = allFonts.find((x) => x.id === fontId);
+    return f ? f.family : "inherit";
+  }
+
+  function fontLabelFor(fontId) {
+    const f = allFonts.find((x) => x.id === fontId);
+    return f ? f.label : "Default";
+  }
 
   const galleryHtml = (product.gallery && product.gallery.length)
     ? `
@@ -111,6 +129,13 @@
     features.forEach((f) => {
       if (featureState[f.id]) parts.push(f.label.replace(/\s*\(\+\$\d+(\.\d+)?\)\s*$/, ""));
     });
+    textFields.forEach((f) => {
+      const state = textState[f.id];
+      if (state && state.value.trim()) {
+        const fontNote = f.fontPicker ? ` (Font: ${fontLabelFor(state.fontId)})` : "";
+        parts.push(`${f.label}: "${state.value.trim()}"${fontNote}`);
+      }
+    });
     return parts;
   }
 
@@ -163,6 +188,97 @@
       });
 
       group.appendChild(row);
+      controls.appendChild(group);
+    });
+
+    textFields.forEach((f) => {
+      const group = document.createElement("div");
+      group.className = "component-group text-field-group";
+
+      const heading = document.createElement("h3");
+      heading.textContent = f.label;
+      group.appendChild(heading);
+
+      const inputRow = document.createElement("div");
+      inputRow.className = "text-input-row";
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.maxLength = f.maxLength || 30;
+      input.placeholder = f.placeholder || "";
+      input.value = textState[f.id].value;
+      input.className = "text-input";
+
+      const charCount = document.createElement("span");
+      charCount.className = "char-count";
+      charCount.textContent = `${input.value.length}/${input.maxLength}`;
+
+      let fontToggleBtn = null;
+      let fontOptions = null;
+      let preview = null;
+
+      function updatePreview() {
+        if (!preview) return;
+        const val = textState[f.id].value.trim();
+        preview.textContent = val || f.placeholder || "";
+        preview.style.fontFamily = fontFamilyFor(textState[f.id].fontId);
+        preview.classList.toggle("is-placeholder", !val);
+      }
+
+      input.addEventListener("input", () => {
+        textState[f.id].value = input.value;
+        charCount.textContent = `${input.value.length}/${input.maxLength}`;
+        updatePreview();
+        renderSummary();
+        refreshCanvasIfVisible();
+      });
+
+      inputRow.appendChild(input);
+      inputRow.appendChild(charCount);
+
+      if (f.fontPicker && allFonts.length) {
+        fontToggleBtn = document.createElement("button");
+        fontToggleBtn.type = "button";
+        fontToggleBtn.className = "font-toggle-btn";
+        fontToggleBtn.textContent = `Font: ${fontLabelFor(textState[f.id].fontId)} ▾`;
+        inputRow.appendChild(fontToggleBtn);
+
+        fontOptions = document.createElement("div");
+        fontOptions.className = "font-options";
+        fontOptions.hidden = true;
+
+        allFonts.forEach((font) => {
+          const opt = document.createElement("button");
+          opt.type = "button";
+          opt.className = "font-option";
+          opt.style.fontFamily = font.family;
+          opt.textContent = font.label;
+          opt.addEventListener("click", () => {
+            textState[f.id].fontId = font.id;
+            fontToggleBtn.textContent = `Font: ${font.label} ▾`;
+            fontOptions.hidden = true;
+            updatePreview();
+            renderSummary();
+            refreshCanvasIfVisible();
+          });
+          fontOptions.appendChild(opt);
+        });
+
+        fontToggleBtn.addEventListener("click", () => {
+          fontOptions.hidden = !fontOptions.hidden;
+        });
+
+        preview = document.createElement("div");
+        preview.className = "text-preview";
+      }
+
+      group.appendChild(inputRow);
+      if (fontOptions) group.appendChild(fontOptions);
+      if (preview) {
+        group.appendChild(preview);
+        updatePreview();
+      }
+
       controls.appendChild(group);
     });
 
@@ -233,9 +349,23 @@
 
       ctx.font = "16px monospace";
       let y = stageH + 74;
-      selectionParts().forEach((line) => {
+      const plainParts = components.map((c) => {
+        const opt = c.options[selection[c.id]];
+        return `${c.label}: ${opt.label}`;
+      }).concat(
+        features.filter((f) => featureState[f.id]).map((f) => f.label.replace(/\s*\(\+\$\d+(\.\d+)?\)\s*$/, ""))
+      );
+      plainParts.forEach((line) => {
         ctx.fillText(line, 24, y);
         y += 26;
+      });
+
+      textFields.forEach((f) => {
+        const state = textState[f.id];
+        if (!state || !state.value.trim()) return;
+        ctx.font = `18px ${fontFamilyFor(state.fontId)}`;
+        ctx.fillText(`${f.label}: "${state.value.trim()}"`, 24, y);
+        y += 28;
       });
 
       ctx.font = "bold 20px monospace";

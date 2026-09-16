@@ -28,6 +28,17 @@
      as a horizontal scrollable strip above the customizer. Omit the
      field entirely (or leave it an empty array) if you don't have
      photos for a product yet.
+
+   TEXT FIELDS (optional, e.g. engraved names, custom messages):
+   - "textFields" is an array of:
+       { id, label, maxLength, placeholder, fontPicker }
+     - maxLength: how many characters this item has room for — set
+       this per field since some items have less space than others
+     - placeholder: greyed-out example text shown in the empty input
+     - fontPicker: true/false — if true, a "Font" button appears next
+       to the input letting the buyer choose a font (from FONTS in
+       assets/js/fonts.js) and shows a live preview of their text in
+       that font. If false/omitted, it's just a plain text box.
    ============================================================ */
 
 const PRODUCTS = [
@@ -37,6 +48,9 @@ const PRODUCTS = [
     blurb: "A small stackable canister — placeholder demo product for the customizer.",
     customizable: true,
     basePrice: 28,
+    textFields: [
+      { id: "nameText", label: "Personalized Text", maxLength: 16, placeholder: "e.g. Sarah", fontPicker: true }
+    ],
     gallery: [
       "assets/img/gallery/sample-canister-1.svg",
       "assets/img/gallery/sample-canister-2.svg",
