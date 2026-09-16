@@ -426,6 +426,20 @@ a:hover { color: var(--ink); }
   font-weight: 700;
 }
 
+.canvas-wrap {
+  margin-top: 14px;
+  border: 1.5px solid var(--chrome);
+  box-shadow: 3px 3px 0 0 var(--chrome);
+  padding: 8px;
+  background: var(--paper);
+}
+
+.canvas-wrap canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .request-btn {
   display: inline-block;
   margin-top: 12px;

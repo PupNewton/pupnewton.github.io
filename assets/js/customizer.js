@@ -49,13 +49,16 @@
       <strong>Your selection:</strong>
       <div class="summary-line" id="summary-line"></div>
       <div class="summary-price" id="summary-price"></div>
-      <a class="request-btn" id="request-btn" href="#">Download summary image &#9662;</a>
+      <a class="request-btn" id="request-btn" href="#">Generate summary image &#9662;</a>
       <p class="telegram-note">
-        Download the image, then send it to me on
+        Once it appears below, screenshot it (or right-click it and choose "Copy Image"),
+        then send it to me on
         <a href="https://t.me/${TELEGRAM_HANDLE}" target="_blank" rel="noopener">Telegram (@${TELEGRAM_HANDLE})</a>
         to place your order.
       </p>
-      <canvas id="summary-canvas" width="600" height="720" style="display:none;"></canvas>
+      <div class="canvas-wrap" id="canvas-wrap" style="display:none;">
+        <canvas id="summary-canvas" width="600" height="720"></canvas>
+      </div>
     </div>
   `;
 
@@ -65,6 +68,7 @@
   const summaryPrice = document.getElementById("summary-price");
   const requestBtn = document.getElementById("request-btn");
   const canvas = document.getElementById("summary-canvas");
+  const canvasWrap = document.getElementById("canvas-wrap");
 
   function activeLayers() {
     const layers = components.map((c) => c.options[selection[c.id]].image);
@@ -109,6 +113,7 @@
       img.alt = "";
       stage.appendChild(img);
     });
+    refreshCanvasIfVisible();
   }
 
   function renderSummary() {
@@ -235,18 +240,20 @@
     });
   }
 
+  function refreshCanvasIfVisible() {
+    if (canvasWrap.style.display === "block") {
+      generateSummaryImage();
+    }
+  }
+
   requestBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const originalLabel = requestBtn.innerHTML;
     requestBtn.textContent = "Generating…";
     generateSummaryImage()
-      .then((dataUrl) => {
-        const a = document.createElement("a");
-        a.href = dataUrl;
-        a.download = `${product.id}-order.png`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+      .then(() => {
+        canvasWrap.style.display = "block";
+        canvasWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
         requestBtn.innerHTML = originalLabel;
       })
       .catch(() => {
